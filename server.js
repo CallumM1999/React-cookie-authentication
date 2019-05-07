@@ -4,7 +4,7 @@ const PORT = 4000;
 
 const path = require('path');
 
-const publicPath = path.resolve(__dirname, 'build');
+const publicPath = path.resolve(__dirname, 'out');
 
 // console.log(publicPath);
 
@@ -15,7 +15,9 @@ app.get('/', (req, res) => {
 app.get('/profile', (req, res) => {
     // res.sendFile(path.resolve(publicPath, 'index.html'))
 
-    res.redirect('/?yourenot=authenticated')
+    res.sendFile(path.resolve(publicPath, 'profile', 'index.html'))
+
+    // res.redirect('/?yourenot=authenticated')
 })
 
 app.use(express.static(publicPath))
