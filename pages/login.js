@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Head from '../components/head'
+import Layout from '../components/layout'
 
 class Login extends Component {
   constructor(props) {
@@ -52,8 +52,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
-        <Head title="Login" />
+      <Layout>
 
         <h1>Login</h1>
 
@@ -63,7 +62,7 @@ class Login extends Component {
 
           <input type='submit' value='submit'/>
         </form>
-      </div>
+      </Layout>
     )
   }
 }

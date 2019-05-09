@@ -1,12 +1,10 @@
 import React from 'react'
-import Head from '../components/head'
+import Layout from '../components/layout';
 
 const Home = () => (
-  <div>
-    <Head title="Home" />
-
+  <Layout>
     <h1>Home</h1>
-  </div>
+  </Layout>
 )
 
 export default Home
