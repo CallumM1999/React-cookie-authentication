@@ -7,6 +7,7 @@ const Head = () => (
 
       <a href="/">Home</a>
       <a href="/profile">Profile</a>
+      <a href='/logout'>Logout</a>
       
   </header>
 )
