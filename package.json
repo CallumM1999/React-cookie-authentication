@@ -1,10 +1,7 @@
 {
   "name": "create-next-example-app",
   "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start",
-    "export": "next export"
+    "start": "node app.js"
   },
   "dependencies": {
     "cookie-parser": "^1.4.4",
