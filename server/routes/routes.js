@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const con = require('../db/connection');
+
 // Middleware
 const isLoggedIn = require('../middleware/isLoggedIn');
 
@@ -20,25 +22,64 @@ router.post('/register', (req, res) => {
     if (!email || !password || !username) {
         return res.status(400).send();
     } else {
-        res.status(200).send();
+        const query = `INSERT INTO user (username, email, password) VALUES ('${username}','${email}','${password}');`;
+
+        con.query(query, (err, queryResponse) => {
+            if (err) return res.status(500).send();
+
+            req.login({
+                email,
+                username
+            }, err => {
+                if (err) res.status(500).send();
+
+                req.session.user = req.user;
+
+                console.log({ queryResponse })
+                res.status(200).send();
+            })
+
+
+            
+        })
+        
     }
 
 })
 
 
 router.post('/login', (req, res) => {
-    req.login({ username: 'callumm1999' }, function (err) {
-        if (err) {
-            console.log('ERRROR LOGGIN IN', err)
-            return res.status(401).send();
-        }
+    const { email, password } = req.body;
 
-        req.session.user = req.user;
+    if (!email || !password) return res.status(400).send();
 
-        res.status(200).json({
-            success: true
+    const query = `SELECT password FROM user WHERE email = '${email}';`;
+
+    con.query(query, (err, queryResponse) => {
+        if (err) return res.status(401).send();
+
+        if (queryResponse.length === 0) return res.status(401).send();
+
+        const passwordHash = queryResponse[0].password;
+
+        if (passwordHash !== password) return res.status(401).send();
+
+        req.login({ username: email }, function (err) {
+            if (err) {
+                console.log('ERRROR LOGGIN IN', err)
+                return res.status(401).send();
+            }
+
+            req.session.user = req.user;
+
+            res.status(200).json({
+                success: true
+            })
         })
     })
+
+
+    
 })
 
 
@@ -58,7 +99,8 @@ router.get('/logout', (req, res) => {
 })
 
 router.get('/profile', isLoggedIn, (req, res) => {
-    return req.app.render(req, res, req.url, { name: 'callum'})
+
+    return req.app.render(req, res, req.url, { name: req.session.user.username})
 });
 
 router.get('*', (req, res) => {
