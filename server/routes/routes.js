@@ -4,6 +4,27 @@ const router = express.Router();
 // Middleware
 const isLoggedIn = require('../middleware/isLoggedIn');
 
+router.post('/register', (req, res) => {
+    console.log('register request');
+
+
+
+    const { email, password, username } = req.body;
+
+
+    console.log(req.body);
+
+
+
+
+    if (!email || !password || !username) {
+        return res.status(400).send();
+    } else {
+        res.status(200).send();
+    }
+
+})
+
 
 router.post('/login', (req, res) => {
     req.login({ username: 'callumm1999' }, function (err) {

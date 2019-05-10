@@ -10,7 +10,7 @@ const configurePassport = require('./passport/configurePassport');
 configurePassport();
 
 
-const expressServer = app => {
+const expressServer = async app => {
     const server = express();
 
     // passing app into Router
@@ -33,9 +33,23 @@ const expressServer = app => {
 
     server.use(require('./routes/routes'));
 
+    const con = require('./db/connection');
+
+    con.connect(err => {
+        if (err) throw err;
+
+        console.log('Connected to database!');
+    });
+
+    const query = 'SELECT * FROM user;';
+
+    con.query(query, (err, queryResponse) => {
+        if (err) console.error(err);
+
+        console.log({ queryResponse })
+    })
+
     return server.listen(PORT, () => console.log(`${__filename} is running on http://localhost:${PORT}`));
-
-
 };
 
 module.exports = expressServer;
