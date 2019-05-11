@@ -1,16 +1,19 @@
 import React from 'react';
-import Link from 'next/link';
 
-const Header = () => (
+const Header = props => (
   <header>
     <h1 className='title'>Header</h1>
 
     <ul>
       <li><a href="/">Home</a></li>
       <li><a href="/profile">Profile</a></li>
-      <li><a href='/logout'>Logout</a></li>
+      <li>
+        <a 
+          href={ props.auth ? '/logout' : '/login' }
+        >{props.auth ? 'Logout' : 'Login' }</a>
+      </li>
+        
     </ul>
-
     
       <style jsx> {`
 
