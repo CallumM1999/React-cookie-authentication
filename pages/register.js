@@ -10,7 +10,7 @@ class Register extends Component {
       password: '',
       username: '',
 
-
+      
       error: null,
     }
 
@@ -47,7 +47,7 @@ class Register extends Component {
       .then(res => {
         if (res.status === 200) {
           console.log('Success');
-          // window.location = '/profile';
+          window.location = '/profile';
         } else {
           console.log('status: ', res.status);
         }

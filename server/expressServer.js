@@ -4,11 +4,7 @@ const bodyParser = require('body-parser');
 
 const PORT = 4000;
 
-const passport = require('passport');
-
-const configurePassport = require('./passport/configurePassport');
-configurePassport();
-
+const cookieParser = require('cookie-parser');
 
 const expressServer = async app => {
     const server = express();
@@ -20,16 +16,7 @@ const expressServer = async app => {
     })
 
     server.use(bodyParser());
-
-    server.use(session({
-        key: 'session_cookie_name',
-        secret: 'some_secret_key',
-        saveUninitialized: false,
-        resave: false
-    }));
-
-    server.use(passport.initialize());
-    server.use(passport.session());
+    server.use(cookieParser())
 
     server.use(require('./routes/routes'));
 
@@ -40,14 +27,6 @@ const expressServer = async app => {
 
         console.log('Connected to database!');
     });
-
-    const query = 'SELECT * FROM user;';
-
-    con.query(query, (err, queryResponse) => {
-        if (err) console.error(err);
-
-        console.log({ queryResponse })
-    })
 
     return server.listen(PORT, () => console.log(`${__filename} is running on http://localhost:${PORT}`));
 };
