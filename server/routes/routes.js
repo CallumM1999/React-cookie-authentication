@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const con = require('../db/connection');
 
 // Middleware
+const protectedRoute = require('../middleware/protectedRoute');
 const isLoggedIn = require('../middleware/isLoggedIn');
 
 router.post('/register', (req, res) => {
@@ -60,15 +61,33 @@ router.post('/login', (req, res) => {
     })
 })
 
+
 router.get('/logout', (req, res) => {
     res.cookie('jwt', null);
     res.redirect('/');  
 });
 
-router.get('/profile', isLoggedIn, (req, res) => {
-    const { email } = req.user;
+router.get('/', isLoggedIn, (req, res) => {
+    const auth = !!req.user;
+    return req.app.render(req, res, req.url, { auth });
+});
 
-    return req.app.render(req, res, req.url, { name: username });
+router.get('/login', isLoggedIn, (req, res) => {
+    const auth = !!req.user;
+    return req.app.render(req, res, req.url, { auth });
+});
+
+router.get('/register', isLoggedIn, (req, res) => {
+    const auth = !!req.user;
+    return req.app.render(req, res, req.url, { auth });
+});
+
+
+router.get('/profile', isLoggedIn, protectedRoute, (req, res) => {
+    const { username } = req.user;
+    const auth = !!req.user;
+
+    return req.app.render(req, res, req.url, { name: username, auth });
 });
 
 router.get('*', (req, res) => {

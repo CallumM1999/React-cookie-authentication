@@ -3,7 +3,7 @@ import Header from './header';
 
 const Layout = props => (
     <div>
-        <Header/>
+        <Header auth={props.auth}/>
 
         {props.children}
     
@@ -17,6 +17,6 @@ const Layout = props => (
 
         `}</style>
     </div>
-);
+)
 
 export default Layout;

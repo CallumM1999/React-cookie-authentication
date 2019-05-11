@@ -8,25 +8,14 @@ class Profile extends Component {
     }
 
     static async getInitialProps({ query }) {
-        console.log({ query })
-
-
-        // this.name = query.name;
-
-        return { name: query.name, count: query.count }
+        return { name: query.name, auth: query.auth }
     }
 
     render() {
         return (
-            <Layout>
-                
+            <Layout auth={this.props.auth}>
                 <h1>Profile</h1>
-
-
                 <p>Welcome, {this.props.name}!</p>
-
-                <p>You have visited this page {this.props.count} times!</p>
-
             </Layout>
         )
     }
